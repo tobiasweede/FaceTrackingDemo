@@ -107,17 +107,17 @@ public class FTTest : MonoBehaviour
     private int rightLookOutIndex;
 
     private PxrFaceTrackingInfo faceTrackingInfo;
-    // Start is called before the first frame update
+
     void Start()
     {
         for (int i = 0; i < indexList.Length; i++)
         {
             indexList[i] = skin.sharedMesh.GetBlendShapeIndex(blendShapeList[i]);
-            GameObject textGO = GameObject.Instantiate(text,TextParent);
+            GameObject textGO = GameObject.Instantiate(text, TextParent);
             texts.Add(textGO.GetComponent<TMP_Text>());
         }
 
-        
+
         tongueIndex = tongueBlendShape.sharedMesh.GetBlendShapeIndex("tongueOut");
         leftLookDownIndex = leftEyeExample.sharedMesh.GetBlendShapeIndex("eyeLookDownLeft");
         leftLookUpIndex = leftEyeExample.sharedMesh.GetBlendShapeIndex("eyeLookUpLeft");
@@ -128,6 +128,16 @@ public class FTTest : MonoBehaviour
         rightLookInIndex = rightEyeExample.sharedMesh.GetBlendShapeIndex("eyeLookInRight");
         rightLookOutIndex = rightEyeExample.sharedMesh.GetBlendShapeIndex("eyeLookOutRight");
 
+        // https://docs.unity3d.com/ScriptReference/MonoBehaviour.InvokeRepeating.html
+        InvokeRepeating("SendValues", 2.0f, 0.1f);
+
+    }
+
+    void SendValues()
+    {
+        blendShapeWeight = faceTrackingInfo.blendShapeWeight;
+        string json = JsonUtility.ToJson(blendShapeWeight);
+        Debug.Log(json);
     }
 
     // Update is called once per frame
@@ -154,16 +164,16 @@ public class FTTest : MonoBehaviour
             float[] data = blendShapeWeight;
             for (int i = 0; i < data.Length; ++i)
             {
-                texts[i].text = $"{blendShapeList[i]}\n{(int)(data[i] * 120)}"; 
+                texts[i].text = $"{blendShapeList[i]}\n{(int)(data[i] * 120)}";
 
                 if (indexList[i] >= 0)
                 {
                     skin.SetBlendShapeWeight(indexList[i], 100 * data[i]);
                 }
             }
-            
+
             tongueBlendShape.SetBlendShapeWeight(tongueIndex, 100 * data[51]);
-            
+
             leftEyeExample.SetBlendShapeWeight(leftLookUpIndex, 100 * data[31]);
             leftEyeExample.SetBlendShapeWeight(leftLookDownIndex, 100 * data[0]);
             leftEyeExample.SetBlendShapeWeight(leftLookInIndex, 100 * data[2]);
@@ -172,7 +182,7 @@ public class FTTest : MonoBehaviour
             rightEyeExample.SetBlendShapeWeight(rightLookDownIndex, 100 * data[12]);
             rightEyeExample.SetBlendShapeWeight(rightLookInIndex, 100 * data[11]);
             rightEyeExample.SetBlendShapeWeight(rightLookOutIndex, 100 * data[45]);
-            
+
         }
     }
 
