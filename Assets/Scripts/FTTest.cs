@@ -117,7 +117,6 @@ public class FTTest : MonoBehaviour
             texts.Add(textGO.GetComponent<TMP_Text>());
         }
 
-
         tongueIndex = tongueBlendShape.sharedMesh.GetBlendShapeIndex("tongueOut");
         leftLookDownIndex = leftEyeExample.sharedMesh.GetBlendShapeIndex("eyeLookDownLeft");
         leftLookUpIndex = leftEyeExample.sharedMesh.GetBlendShapeIndex("eyeLookUpLeft");
@@ -129,7 +128,7 @@ public class FTTest : MonoBehaviour
         rightLookOutIndex = rightEyeExample.sharedMesh.GetBlendShapeIndex("eyeLookOutRight");
 
         // https://docs.unity3d.com/ScriptReference/MonoBehaviour.InvokeRepeating.html
-        InvokeRepeating("SendValues", 2.0f, 0.1f);
+        InvokeRepeating("SendValues", 0.0f, 1.0f);
 
     }
 
@@ -149,15 +148,12 @@ public class FTTest : MonoBehaviour
             {
                 case FaceTrackingMode.Hybrid:
                     PXR_System.GetFaceTrackingData(0, GetDataType.PXR_GET_FACELIP_DATA, ref faceTrackingInfo);
-
                     break;
                 case FaceTrackingMode.FaceOnly:
                     PXR_System.GetFaceTrackingData(0, GetDataType.PXR_GET_FACE_DATA, ref faceTrackingInfo);
-
                     break;
                 case FaceTrackingMode.LipsyncOnly:
                     PXR_System.GetFaceTrackingData(0, GetDataType.PXR_GET_LIP_DATA, ref faceTrackingInfo);
-
                     break;
             }
             blendShapeWeight = faceTrackingInfo.blendShapeWeight;
