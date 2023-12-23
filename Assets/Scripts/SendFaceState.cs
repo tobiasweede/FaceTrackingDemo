@@ -1,6 +1,4 @@
-using System;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Networking;
 using UnityEngine.UI;
@@ -36,8 +34,6 @@ public class SendFaceState : MonoBehaviour
         p.BlendShapeWeight[0] = 42.0f;
         StartCoroutine(ViaHttp(p));
     }
-
-
 
     IEnumerator ViaHttp(Payload p)
     {
